@@ -1,5 +1,5 @@
 $(function () {
-  var sepalLength = $('#sepalLength'); // jQuery Selector
+  var sepalLength = $('#sepalLength');
   var sepalWidth = $('#sepalWidth');
   var petalLength = $('#petalLength');
   var petalWidth = $('#petalWidth');
@@ -7,6 +7,11 @@ $(function () {
   var btnPredict = $('#btnPredict');
   var btnLIFF = $('#btnLIFF');
   var answer = $('#answer');
+
+  liff.init(function (data) {
+    console.log(data.context.userId);
+    answer.html(answer.html() + '<br>' + data.context.userId);
+  });
 
   var getIrisData = function () {
     iris = sepalLength.val() + ',' + sepalWidth.val() + ',' + petalLength.val() + ',' + petalWidth.val();
@@ -27,5 +32,14 @@ $(function () {
         answer.html(response.result);
       }
     });
+  });
+
+  btnLIFF.click(function () {
+    console.log(answer.html());
+    liff.sendMessages([{
+      type: 'text',
+      text: answer.html(),
+    }]);
+    liff.closeWindow();
   });
 });
